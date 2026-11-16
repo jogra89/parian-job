@@ -666,7 +666,10 @@ const FUT0 = [   // ό,τι είπαν οι ίδιοι (16 Νοε 2026)
   { id: 'f8', who: 'ΓΙΑΓΚΟΣ', from: '2026-11-30', to: '2026-11-30' },
   { id: 'f9', who: 'ΜΑΚΗΣ', from: '2026-12-02', to: '2026-12-10' },
   { id: 'f10', who: 'ΝΙΚΟΛ', from: '2026-12-23', to: '2027-01-07' },
-  { id: 'f11', who: 'ΕΥΗ', from: '2026-12-23', to: '2027-01-07' }];
+  { id: 'f11', who: 'ΕΥΗ', from: '2026-12-23', to: '2027-01-07' },
+  // εβδομάδα 16–22 Νοε: ΕΥΗ και ΝΙΚΟΛ έρχονται μόνο την Τετάρτη 18/11
+  { id: 'f12', who: 'ΕΥΗ', from: '2026-11-16', to: '2026-11-16' }, { id: 'f13', who: 'ΕΥΗ', from: '2026-11-19', to: '2026-11-19' },
+  { id: 'f14', who: 'ΝΙΚΟΛ', from: '2026-11-16', to: '2026-11-16' }, { id: 'f15', who: 'ΝΙΚΟΛ', from: '2026-11-19', to: '2026-11-19' }];
 const PEOPLE = D.actors.map(a => a.name).concat(STAFF.map(p => p.name));
 const isoD = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 const today = () => isoD(new Date());
@@ -710,7 +713,7 @@ function awayBar() {
   return `<div class="panel">${dayNav('ab')}<div class="row" style="margin-top:8px"><h2 style="margin:0">Ποιος λείπει;</h2><span class="small push">${n ? `${n} ${n === 1 ? 'ηθοποιός λείπει' : 'ηθοποιοί λείπουν'} · ${D.actors.length - n} εδώ` : 'Όλοι οι ηθοποιοί εδώ'}</span></div>
     <div class="tg-grid" role="group" aria-label="Ποιος λείπει" style="margin-top:10px">${D.actors.map(a => tg(a.name, a.light, a.part ? '<i>1–2 φορές/εβδ.</i>' : '')).join('')}</div>
     <div class="tg-grid staff" role="group" aria-label="Σκηνοθεσία" style="margin-top:8px">${STAFF.map(p => tg(p.name, '#e4e4df', `<i>${esc(p.job)}</i>`)).join('')}</div>
-    <div class="row" style="margin-top:10px"><button class="btn" id="away-none"${aw.size ? '' : ' disabled'}>Όλοι εδώ</button>${ov ? '<button class="btn" id="away-reset">Όπως το πρόγραμμα</button>' : ''}${PART.length ? `<button class="btn" id="away-part">Λείπουν ${esc(PART.join(' και '))}</button>` : ''}
+    <div class="row" style="margin-top:10px"><button class="btn" id="away-none"${aw.size ? '' : ' disabled'}>Όλοι εδώ</button>${ov ? '<button class="btn" id="away-reset">Όπως το πρόγραμμα</button>' : ''}
       <button class="go push" data-abs="future">Μελλοντικές απουσίες</button></div></div>`;
 }
 function setAway(nm, v, date = DAY) {
@@ -785,7 +788,7 @@ function planDay() {
       <p class="small" style="margin:10px 0 0">Σύνολο ~${pg(pages(ppNeed))} σελίδες σε ${ppNeed.length} σκηνές.</p></div>
     <div class="panel"><h3>Τις μέρες που λείπουν</h3><p style="margin:0 0 6px">Βγαίνουν ολόκληρες οι σκηνές <b>${sceneList(ppOk.map(p => p.s.seq)) || '—'}</b> (~${pg(pages(ppOk))} σελ.).</p>
       <p class="small" style="margin:0">Με αναπλήρωση (έχουν ως το 10% των λόγων): σκηνές ${sceneList(pp.filter(p => p.status === 'near').map(p => p.s.seq)) || '—'}.</p>
-      <div class="row" style="margin-top:10px"><button class="btn" id="part-go">Δείξε μου αυτή την πρόβα</button></div></div></div>` : '';
+      </div></div>` : '';
   return awayBar() +
     `<div class="grid"><div class="card blue"><div class="tiny">Ολόκληρες σκηνές</div><div class="number">${full.length}/${D.scenes.length}</div><div class="small">~${pg(pages(full))} σελίδες · είναι όλοι εδώ</div></div>
       <div class="card"><div class="tiny">Με αναπλήρωση</div><div class="number">${near.length}</div><div class="small">~${pg(pages(near))} σελ. · λείπουν μόνο μικροί ρόλοι</div></div>
