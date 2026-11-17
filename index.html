@@ -996,7 +996,7 @@ function sheetHTML(name) {
     if (b.k === 'a' && ARW.test(b.t) && hasR(b.th || '')) moves.push({ q: s.seq, t: b.t });
     if (b.mv && hasR(b.mvh || '')) moves.push({ q: s.seq, t: b.mvh.split(' · ').filter(hasR).map(plain).join(' · ') }); }); });
   const cues = D.sounds.filter(c => c.by.includes(name)), ch = D.costume[name] || [], ab = missed(name);
-  const dense = x.roles.length >= 5 || moves.length + ch.length + cues.length > 44;
+  const dense = x.roles.length >= 5 || moves.length + ch.length + cues.length > 38;
   return `<section class="sheetpg${dense ? ' dense' : ''}"><div class="sh-head" style="--pc:${a.light}"><b>${esc(name)}</b><span>${esc(x.roles.join(' · '))}</span><span class="push">${num(x.speeches)} ατάκες · ${num(x.words)} λέξεις · ${x.scenes.length} ${x.scenes.length === 1 ? 'σκηνή' : 'σκηνές'}</span></div>
     <h3>Σκηνές</h3><table class="sh-t"><thead><tr><th class="num">Σκ.</th><th>Ρόλος</th><th class="num">Ατάκες</th><th class="num">Λέξεις</th><th>Πρώτη ατάκα</th></tr></thead><tbody>${sc}</tbody></table>
     <h3>Είσοδοι και έξοδοι</h3>${moves.length ? `<ul class="clean sh-l sh-moves">${moves.map(m => `<li><b>Σκ. ${m.q}</b> ${esc(cut(m.t, 95))}</li>`).join('')}</ul>` : '<p class="small">—</p>'}
