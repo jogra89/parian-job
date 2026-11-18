@@ -207,6 +207,7 @@ mark{background:var(--orange);color:var(--ink)}
 .setfig figcaption{display:flex;gap:10px 16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;padding:10px 12px;font-size:13.5px;line-height:1.45;border-top:2px solid var(--ink)}
 .setfig figcaption>span:first-child{flex:1 1 320px}
 .tg i{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.04em;opacity:.8}
+a.btn{display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
 .pimg{width:44px;height:44px;flex:none;border:2px solid var(--ink);background:#fff;padding:2px;object-fit:contain}
 .pimg.sm{width:22px;height:22px;border:0;padding:0;background:none;vertical-align:-5px;margin-right:5px}
 .setfig .kit{display:inline-block;margin-top:6px;font-size:12.5px}
@@ -469,6 +470,7 @@ VIEWS.home = () => {
   return head('Η πρόβα ξεκινά.', `${esc(D.meta.genre)} · ${esc(D.meta.company)} · ${esc(D.meta.edition)} · ${esc(D.meta.cast)}`) +
     `<div class="grid">${mineCard}
       <div class="card orange">${homeAway()}<div class="row"><button class="btn" data-go="plan">Απουσίες</button><button class="btn" data-go="read">Ανάγνωση</button></div></div>
+      <div class="card"><div class="tiny">Το κείμενο σε αρχείο</div><div class="small" style="margin:4px 0 8px">Πάντα η τελευταία εκδοχή.</div><div class="row"><a class="btn" href="https://jogra89.github.io/parian-job/parian-job.pdf" target="_blank" rel="noopener">PDF</a><a class="btn" href="https://jogra89.github.io/parian-job/parian-job.fdx" download>FDX (Final Draft)</a></div></div>
       <div class="card blue"><div class="tiny">Σκηνές</div><div class="number">${D.scenes.length}</div><div class="small">~${Math.round(D.meta.pages)} σελίδες Final Draft</div></div>
       <div class="card"><div class="tiny">Ατάκες</div><div class="number">${num(speeches.length)}</div><div class="small">${num(D.cast.total)} λέξεις διαλόγου</div></div>
       <div class="card"><div class="tiny">Διανομή</div><div class="number">${D.actors.length}</div><div class="small">ηθοποιοί · ${D.cast.roles.filter(r => !r.silent).length} ρόλοι με λόγια, ${D.cast.roles.filter(r => r.silent).length} βουβοί</div></div></div>
