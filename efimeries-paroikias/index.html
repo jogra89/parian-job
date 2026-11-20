@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, noarchive">
   <title>Εφημερίες Παροικίας · Δεκέμβριος 2026 – Απρίλιος 2027</title>
   <style>
-    :root{color-scheme:light;--ink:#142c28;--muted:#536660;--paper:#f0f4ef;--white:#fff;--line:#d7e1d9;--forest:#183c34;--mint:#d9eee2;--green:#22634d;--peach:#ffeadb;--rust:#814020;--soft:#edf2ee;--radius:16px}
+    :root{color-scheme:light;--ink:#142c28;--muted:#536660;--paper:#f0f4ef;--white:#fff;--line:#d7e1d9;--forest:#183c34;--mint:#d9eee2;--green:#22634d;--rust:#814020;--soft:#edf2ee;--radius:16px}
     *{box-sizing:border-box}
     body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.48 system-ui,sans-serif}
     button,select{font:inherit;color:inherit}
@@ -57,14 +57,13 @@
     .day[aria-pressed=true]{box-shadow:inset 0 0 0 2px var(--green);z-index:1}
     .day:focus-visible{outline-offset:-4px;z-index:2}
     .day .num{font-size:1rem;font-weight:730;font-variant-numeric:tabular-nums}
-    .day .pharmacy{font-size:.83rem;font-weight:650;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .pharmacy{display:inline-block;background:var(--pharmacy-color);color:var(--pharmacy-ink);border-radius:4px;padding:2px 5px;font-weight:650;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .day .pharmacy{font-size:.81rem;width:100%}
     .day .mark{font-size:.74rem;color:var(--muted);line-height:1.14}
-    .day.incoming{background:var(--mint);color:#134833}
-    .day.outgoing,.day.conflict{background:var(--peach);color:var(--rust)}
-    .day.kept{background:#e7efee;color:#233f3e}
+    .day.incoming{background:#eaf4ee}
+    .day.outgoing,.day.conflict{background:#fff4e9}
+    .day.conflict .mark{color:var(--rust);font-weight:700}
     .legend{display:flex;flex-wrap:wrap;gap:8px 16px;padding:12px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
-    .legend b{width:12px;height:12px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:5px;border:1px solid #839a8c}
-    .legend .leg-in{background:var(--mint)} .legend .leg-out{background:var(--peach)} .legend .leg-keep{background:#e7efee}
     .detail{padding:17px;min-width:0}
     .detail h2{font-size:1.18rem;margin-bottom:9px}
     .detail-label{font-size:.83rem;color:var(--muted);margin-bottom:2px}
@@ -94,7 +93,7 @@
     .mobile-name{display:none}
     [hidden]{display:none!important}
     @media(max-width:850px){.dashboard{grid-template-columns:1fr}.detail{grid-row:2}.planning{grid-template-columns:1fr;gap:5px}.overview .switch{min-height:30px}}
-    @media(max-width:540px){.wrap{width:calc(100% - 20px)}.masthead{padding:20px 0}.masthead .wrap{align-items:start;gap:12px}.sub{font-size:.9rem}main{padding-top:13px}.overview,.table-panel{padding:13px}.calendar-header{padding:11px}.month-nav{gap:4px}.month-nav button{padding:5px 7px;font-size:.84rem}.day{padding:5px 3px;min-height:57px;gap:2px}.day .pharmacy{font-size:.72rem}.day .mark{display:none}.week span{padding:5px 2px;font-size:.74rem}.desktop-name{display:none}.mobile-name{display:inline}th,td{padding:7px 4px;font-size:.78rem}.date-link{min-height:38px}.legend{padding:9px;gap:6px 11px}.table-head{align-items:start}.filters{min-width:0}}
+    @media(max-width:540px){.wrap{width:calc(100% - 20px)}.masthead{padding:20px 0}.masthead .wrap{align-items:start;gap:12px}.sub{font-size:.9rem}main{padding-top:13px}.overview,.table-panel{padding:13px}.calendar-header{padding:11px}.month-nav{gap:4px}.month-nav button{padding:5px 7px;font-size:.84rem}.day{padding:5px 3px;min-height:57px;gap:2px}.day .pharmacy{font-size:.72rem;padding-inline:2px}.day .mark{display:none}.week span{padding:5px 2px;font-size:.74rem}.desktop-name{display:none}.mobile-name{display:inline}th,td{padding:7px 4px;font-size:.78rem}.date-link{min-height:38px}.legend{padding:9px;gap:6px 11px}.table-head{align-items:start}.filters{min-width:0}}
     @media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
     @media print{body{background:white}.wrap{width:100%}.masthead{background:white;color:var(--ink);padding:0 0 10px}.kicker,.sub{color:var(--ink)}.no-print,.detail,.month-nav{display:none!important}.dashboard{display:block}.panel{break-inside:avoid}.table-panel{break-inside:auto}th,td{padding-block:4px}}
   </style>
@@ -135,7 +134,7 @@
         </div>
         <div class="week" aria-hidden="true"><span>Δευ</span><span>Τρί</span><span>Τετ</span><span>Πέμ</span><span>Παρ</span><span>Σάβ</span><span>Κυρ</span></div>
         <ol class="days" id="days" aria-labelledby="month-title"></ol>
-        <div class="legend" id="legend"></div>
+        <div class="legend" id="legend" aria-label="Χρώματα φαρμακείων από το Google Calendar"></div>
       </section>
 
       <aside class="panel detail" id="detail" aria-labelledby="day-title" tabindex="-1">
@@ -148,13 +147,14 @@
           <label class="switch"><input type="checkbox" id="include"> Δοκιμή αυτής της ανταλλαγής</label>
           <label class="label" for="replacement">Ημερομηνία που παίρνει ο Γράβαρης</label>
           <select id="replacement" aria-describedby="replacement-note"></select>
-          <p class="footnote" id="replacement-note">Η επιλογή άλλης ημερομηνίας αλλάζει αμοιβαία τα ζευγάρια των δύο προτάσεων.</p>
+          <p class="footnote" id="replacement-note">Αν η ημερομηνία χρησιμοποιείται ήδη, οι δύο προτάσεις ανταλλάσσουν ημερομηνίες.</p>
         </div>
         <details class="rules">
           <summary>Κανόνες του πλάνου</summary>
           <ul>
-            <li>Για τον Γράβαρη, μόνο Τρίτη, Παρασκευή, Σάββατο ή Κυριακή.</li>
-            <li>Χωρίς εφημερία Γράβαρη 1–15 Δεκεμβρίου και 10 Ιανουαρίου–31 Μαρτίου, περιλαμβανομένου του 8–24 Μαρτίου.</li>
+            <li>1–15 Δεκεμβρίου και 10 Ιανουαρίου–31 Μαρτίου: ο Γράβαρης αποφεύγει Δευτέρα, Τετάρτη και Πέμπτη.</li>
+            <li>8–24 Μαρτίου: ο Γράβαρης δεν εφημερεύει καμία ημέρα.</li>
+            <li>Ο Γράβαρης παίρνει νέες εφημερίες μόνο Τρίτη ή Παρασκευή. Οι εφημερίες του Απριλίου παραμένουν ως έχουν στο προτεινόμενο πλάνο.</li>
             <li>Σειρά προτίμησης: Τσιότσιος, Νούλα, Τσιμπίδης.</li>
             <li>Χωρίς ανταλλαγές με τη Θωμά-Κόντου.</li>
             <li>Κάθε ανταλλαγή κρατά μία εφημερία ανά ημέρα και απαιτεί συμφωνία των φαρμακείων.</li>
@@ -180,15 +180,15 @@
           <tbody id="swap-list"></tbody>
         </table>
       </div>
-      <p class="footnote">Πηγή: Ημερολόγιο «Εφημερίες Παροικίας», έλεγχος 20/11/2026. Οι ανταλλαγές είναι προς συζήτηση και χρειάζονται επιβεβαίωση.</p>
+      <p class="footnote">Πρόγραμμα και χρώματα από το Google Calendar «Εφημερίες Παροικίας» (20/11/2026). Οι ανταλλαγές είναι προς συζήτηση και χρειάζονται επιβεβαίωση.</p>
     </section>
   </main>
 
-  <script id="rota-data" type="application/json">{"rota":[["2026-12-01","g"],["2026-12-02","h"],["2026-12-03","t"],["2026-12-04","s"],["2026-12-05","c"],["2026-12-06","s"],["2026-12-07","g"],["2026-12-08","h"],["2026-12-09","t"],["2026-12-10","s"],["2026-12-11","c"],["2026-12-12","n"],["2026-12-13","g"],["2026-12-14","h"],["2026-12-15","t"],["2026-12-16","s"],["2026-12-17","c"],["2026-12-18","n"],["2026-12-19","g"],["2026-12-20","h"],["2026-12-21","t"],["2026-12-22","s"],["2026-12-23","c"],["2026-12-24","n"],["2026-12-25","g"],["2026-12-26","h"],["2026-12-27","t"],["2026-12-28","s"],["2026-12-29","c"],["2026-12-30","n"],["2026-12-31","g"],["2027-01-01","h"],["2027-01-02","t"],["2027-01-03","s"],["2027-01-04","c"],["2027-01-05","n"],["2027-01-06","g"],["2027-01-07","h"],["2027-01-08","t"],["2027-01-09","s"],["2027-01-10","c"],["2027-01-11","n"],["2027-01-12","g"],["2027-01-13","h"],["2027-01-14","t"],["2027-01-15","s"],["2027-01-16","c"],["2027-01-17","n"],["2027-01-18","g"],["2027-01-19","h"],["2027-01-20","t"],["2027-01-21","s"],["2027-01-22","c"],["2027-01-23","n"],["2027-01-24","g"],["2027-01-25","h"],["2027-01-26","t"],["2027-01-27","s"],["2027-01-28","c"],["2027-01-29","n"],["2027-01-30","g"],["2027-01-31","h"],["2027-02-01","t"],["2027-02-02","s"],["2027-02-03","c"],["2027-02-04","n"],["2027-02-05","g"],["2027-02-06","h"],["2027-02-07","t"],["2027-02-08","s"],["2027-02-09","c"],["2027-02-10","n"],["2027-02-11","g"],["2027-02-12","h"],["2027-02-13","t"],["2027-02-14","s"],["2027-02-15","c"],["2027-02-16","n"],["2027-02-17","g"],["2027-02-18","h"],["2027-02-19","t"],["2027-02-20","s"],["2027-02-21","c"],["2027-02-22","n"],["2027-02-23","g"],["2027-02-24","h"],["2027-02-25","t"],["2027-02-26","s"],["2027-02-27","c"],["2027-02-28","n"],["2027-03-01","g"],["2027-03-02","h"],["2027-03-03","t"],["2027-03-04","s"],["2027-03-05","c"],["2027-03-06","n"],["2027-03-07","g"],["2027-03-08","h"],["2027-03-09","t"],["2027-03-10","s"],["2027-03-11","c"],["2027-03-12","n"],["2027-03-13","g"],["2027-03-14","h"],["2027-03-15","t"],["2027-03-16","s"],["2027-03-17","c"],["2027-03-18","n"],["2027-03-19","g"],["2027-03-20","h"],["2027-03-21","t"],["2027-03-22","s"],["2027-03-23","c"],["2027-03-24","n"],["2027-03-25","g"],["2027-03-26","h"],["2027-03-27","t"],["2027-03-28","s"],["2027-03-29","c"],["2027-03-30","n"],["2027-03-31","g"],["2027-04-01","h"],["2027-04-02","t"],["2027-04-03","s"],["2027-04-04","c"],["2027-04-05","n"],["2027-04-06","g"],["2027-04-07","h"],["2027-04-08","t"],["2027-04-09","s"],["2027-04-10","c"],["2027-04-11","n"],["2027-04-12","g"],["2027-04-13","h"],["2027-04-14","t"],["2027-04-15","s"],["2027-04-16","c"],["2027-04-17","n"],["2027-04-18","g"],["2027-04-19","h"],["2027-04-20","t"],["2027-04-21","s"],["2027-04-22","c"],["2027-04-23","n"],["2027-04-24","g"],["2027-04-25","h"],["2027-04-26","t"],["2027-04-27","s"],["2027-04-28","c"],["2027-04-29","n"],["2027-04-30","g"]],"swaps":[["2026-12-01","2026-12-29"],["2026-12-07","2026-12-18"],["2026-12-13","2026-12-22"],["2026-12-31","2026-12-27"],["2027-01-06","2027-01-05"],["2027-01-12","2027-01-02"],["2027-01-18","2027-01-03"],["2027-01-24","2027-01-08"],["2027-01-30","2027-01-09"],["2027-02-05","2027-04-02"],["2027-02-11","2027-04-03"],["2027-02-17","2027-04-09"],["2027-02-23","2027-04-11"],["2027-03-01","2027-04-17"],["2027-03-07","2027-04-23"],["2027-03-13","2027-04-04"],["2027-03-19","2027-04-10"],["2027-03-25","2027-04-27"],["2027-03-31","2027-04-20"],["2027-04-12","2027-04-16"]]}</script>
+  <script id="rota-data" type="application/json">{"rota":[["2026-12-01","g"],["2026-12-02","h"],["2026-12-03","t"],["2026-12-04","s"],["2026-12-05","c"],["2026-12-06","s"],["2026-12-07","g"],["2026-12-08","h"],["2026-12-09","t"],["2026-12-10","s"],["2026-12-11","c"],["2026-12-12","n"],["2026-12-13","g"],["2026-12-14","h"],["2026-12-15","t"],["2026-12-16","s"],["2026-12-17","c"],["2026-12-18","n"],["2026-12-19","g"],["2026-12-20","h"],["2026-12-21","t"],["2026-12-22","s"],["2026-12-23","c"],["2026-12-24","n"],["2026-12-25","g"],["2026-12-26","h"],["2026-12-27","t"],["2026-12-28","s"],["2026-12-29","c"],["2026-12-30","n"],["2026-12-31","g"],["2027-01-01","h"],["2027-01-02","t"],["2027-01-03","s"],["2027-01-04","c"],["2027-01-05","n"],["2027-01-06","g"],["2027-01-07","h"],["2027-01-08","t"],["2027-01-09","s"],["2027-01-10","c"],["2027-01-11","n"],["2027-01-12","g"],["2027-01-13","h"],["2027-01-14","t"],["2027-01-15","s"],["2027-01-16","c"],["2027-01-17","n"],["2027-01-18","g"],["2027-01-19","h"],["2027-01-20","t"],["2027-01-21","s"],["2027-01-22","c"],["2027-01-23","n"],["2027-01-24","g"],["2027-01-25","h"],["2027-01-26","t"],["2027-01-27","s"],["2027-01-28","c"],["2027-01-29","n"],["2027-01-30","g"],["2027-01-31","h"],["2027-02-01","t"],["2027-02-02","s"],["2027-02-03","c"],["2027-02-04","n"],["2027-02-05","g"],["2027-02-06","h"],["2027-02-07","t"],["2027-02-08","s"],["2027-02-09","c"],["2027-02-10","n"],["2027-02-11","g"],["2027-02-12","h"],["2027-02-13","t"],["2027-02-14","s"],["2027-02-15","c"],["2027-02-16","n"],["2027-02-17","g"],["2027-02-18","h"],["2027-02-19","t"],["2027-02-20","s"],["2027-02-21","c"],["2027-02-22","n"],["2027-02-23","g"],["2027-02-24","h"],["2027-02-25","t"],["2027-02-26","s"],["2027-02-27","c"],["2027-02-28","n"],["2027-03-01","g"],["2027-03-02","h"],["2027-03-03","t"],["2027-03-04","s"],["2027-03-05","c"],["2027-03-06","n"],["2027-03-07","g"],["2027-03-08","h"],["2027-03-09","t"],["2027-03-10","s"],["2027-03-11","c"],["2027-03-12","n"],["2027-03-13","g"],["2027-03-14","h"],["2027-03-15","t"],["2027-03-16","s"],["2027-03-17","c"],["2027-03-18","n"],["2027-03-19","g"],["2027-03-20","h"],["2027-03-21","t"],["2027-03-22","s"],["2027-03-23","c"],["2027-03-24","n"],["2027-03-25","g"],["2027-03-26","h"],["2027-03-27","t"],["2027-03-28","s"],["2027-03-29","c"],["2027-03-30","n"],["2027-03-31","g"],["2027-04-01","h"],["2027-04-02","t"],["2027-04-03","s"],["2027-04-04","c"],["2027-04-05","n"],["2027-04-06","g"],["2027-04-07","h"],["2027-04-08","t"],["2027-04-09","s"],["2027-04-10","c"],["2027-04-11","n"],["2027-04-12","g"],["2027-04-13","h"],["2027-04-14","t"],["2027-04-15","s"],["2027-04-16","c"],["2027-04-17","n"],["2027-04-18","g"],["2027-04-19","h"],["2027-04-20","t"],["2027-04-21","s"],["2027-04-22","c"],["2027-04-23","n"],["2027-04-24","g"],["2027-04-25","h"],["2027-04-26","t"],["2027-04-27","s"],["2027-04-28","c"],["2027-04-29","n"],["2027-04-30","g"]],"swaps":[["2026-12-07","2026-12-11"],["2027-01-18","2026-12-29"],["2027-02-11","2027-01-05"],["2027-02-17","2027-01-29"],["2027-03-01","2027-01-22"],["2027-03-13","2027-02-09"],["2027-03-19","2027-03-05"],["2027-03-25","2027-02-16"],["2027-03-31","2027-03-30"]],"colors":{"g":"#d50000","h":"#4986e7","t":"#616161","s":"#0b8043","c":"#f6bf26","n":"#039be5"}}</script>
   <script>
   'use strict';
   const $ = id => document.getElementById(id);
-  const {rota,swaps} = JSON.parse($('rota-data').textContent);
+  const {rota,swaps,colors} = JSON.parse($('rota-data').textContent);
   const initial = new Map(rota);
   const months = ['2026-12','2027-01','2027-02','2027-03','2027-04'];
   const monthNames = ['Δεκέμβριος','Ιανουάριος','Φεβρουάριος','Μάρτιος','Απρίλιος'];
@@ -202,23 +202,24 @@
     h:['Θωμά-Κόντου Ειρήνη','Θωμά-Κόντου','Θ.-Κ.']
   };
   const partnerOrder = ['c','n','t','s'];
-  const summary = 'Οι 20 αλλαγές χρειάζονται όλες τις συμβατές ημερομηνίες των τεσσάρων φαρμακείων. Ο Τσιότσιος έχει προτεραιότητα στις 1 Δεκεμβρίου, 13 και 19 Μαρτίου και 12 Απριλίου.';
+  const summary = 'Εννέα ανταλλαγές με Τσιότσιο και Νούλα, όλες πριν από τον Απρίλιο. Το πλάνο αφήνει κενό το διάστημα 8–24 Μαρτίου και έχει έως δύο εφημερίες Γράβαρη ανά εβδομάδα.';
   const date = iso => new Date(iso + 'T12:00:00Z');
   const fullDate = new Intl.DateTimeFormat('el-GR',{weekday:'long',day:'numeric',month:'long',timeZone:'UTC'});
   const dayName = new Intl.DateTimeFormat('el-GR',{weekday:'short',timeZone:'UTC'});
   const shortDate = iso => dayName.format(date(iso)) + ' ' + iso.slice(8) + '/' + iso.slice(5,7);
   const capitalize = s => s.slice(0,1).toLocaleUpperCase('el-GR') + s.slice(1);
-  const blocked = iso => iso <= '2026-12-15' || (iso >= '2027-01-10' && iso <= '2027-03-31') || [1,3,4].includes(date(iso).getUTCDay());
-  const eligible = rota.filter(([iso,who]) => partnerOrder.includes(who) && !blocked(iso)).map(([iso]) => iso);
-  eligible.sort((a,b) => partnerOrder.indexOf(initial.get(a)) - partnerOrder.indexOf(initial.get(b)) || a.localeCompare(b));
   const priority = iso => iso >= '2027-03-08' && iso <= '2027-03-24';
+  const limitedPeriod = iso => iso <= '2026-12-15' || (iso >= '2027-01-10' && iso <= '2027-03-31');
+  const blocked = iso => priority(iso) || (limitedPeriod(iso) && [1,3,4].includes(date(iso).getUTCDay()));
+  const eligible = rota.filter(([iso,who]) => partnerOrder.includes(who) && !priority(iso) && [2,5].includes(date(iso).getUTCDay())).map(([iso]) => iso);
+  eligible.sort((a,b) => Number(a.startsWith('2027-04')) - Number(b.startsWith('2027-04')) || partnerOrder.indexOf(initial.get(a)) - partnerOrder.indexOf(initial.get(b)) || a.localeCompare(b));
   const routes = swaps.map(([iso]) => iso);
   const params = new URLSearchParams(location.hash.slice(1));
   let month = months.includes(params.get('m')) ? params.get('m') : months[0];
-  let selected = initial.has(params.get('d')) && params.get('d').startsWith(month) ? params.get('d') : month + '-01';
+  let selected = initial.has(params.get('d')) && params.get('d').startsWith(month) ? params.get('d') : (routes.find(iso => iso.startsWith(month)) || month + '-01');
   let original = params.get('v') === 'original';
   let target = new Map(swaps);
-  const currentRevision = params.get('r') === '3';
+  const currentRevision = params.get('r') === '4';
   const excluded = new Set(currentRevision ? (params.get('off') || '').split(',').filter(iso => routes.includes(iso)) : []);
   const shared = currentRevision ? (params.get('swap') || '').split(',') : [];
   if(shared.length === routes.length && new Set(shared).size === routes.length && shared.every(iso => eligible.includes(iso))) {
@@ -231,6 +232,13 @@
     if(text) item.textContent = text;
     if(className) item.className = className;
     return item;
+  }
+
+  function pharmacyLabel(code, text) {
+    const label = element('span',text,'pharmacy');
+    label.style.setProperty('--pharmacy-color',colors[code]);
+    label.style.setProperty('--pharmacy-ink',['g','t','s'].includes(code) ? '#fff' : '#101a22');
+    return label;
   }
 
   function effectiveRota() {
@@ -291,14 +299,13 @@
       if(who === 'g') {
         if(blocked(iso)) { state = 'conflict'; mark = 'Προς αλλαγή'; }
         else if(previous !== 'g') { state = 'incoming'; mark = 'Νέα βάρδια'; }
-        else { state = 'kept'; }
       } else if(previous === 'g') { state = 'outgoing'; mark = 'Ανταλλαγή'; }
       const day = element('button',null,'day ' + state);
       day.type = 'button';
       day.dataset.date = iso;
       day.setAttribute('aria-pressed',String(iso === selected));
       day.setAttribute('aria-label',capitalize(fullDate.format(date(iso))) + ', ' + pharmacies[who][0] + (mark ? ', ' + mark : ''));
-      const name = element('span',null,'pharmacy');
+      const name = pharmacyLabel(who);
       name.append(element('span',pharmacies[who][1],'desktop-name'),element('span',pharmacies[who][2],'mobile-name'));
       day.append(element('span',String(Number(iso.slice(8))),'num'),name);
       if(mark) day.append(element('span',mark,'mark'));
@@ -309,14 +316,7 @@
     while(cells.length % 7) cells.push(element('li'));
     for(const cell of cells) if(!cell.hasChildNodes()) cell.setAttribute('aria-hidden','true');
     $('days').replaceChildren(...cells);
-    const legend = original ? [['out','Γράβαρης · προς αλλαγή'],['keep','Γράβαρης · διατηρείται']] : [['in','Γράβαρης · νέα βάρδια'],['out','Ανταλλαγή ή εκκρεμότητα'],['keep','Γράβαρης · διατηρείται']];
-    $('legend').replaceChildren(...legend.map(([className,label]) => {
-      const item = element('span');
-      const key = element('b',null,'leg-' + className);
-      key.setAttribute('aria-hidden','true');
-      item.append(key,label);
-      return item;
-    }));
+    $('legend').replaceChildren(...['g',...partnerOrder,'h'].map(code => pharmacyLabel(code,pharmacies[code][1])));
   }
 
   function drawDetail(effective) {
@@ -325,7 +325,7 @@
     const previous = initial.get(selected);
     const actual = effective.get(selected);
     $('day-title').textContent = capitalize(fullDate.format(date(selected)));
-    $('assignment').textContent = pharmacies[actual][0];
+    $('assignment').replaceChildren(pharmacyLabel(actual,pharmacies[actual][0]));
     $('previous').hidden = previous === actual;
     $('previous').textContent = 'Αρχικά · ' + pharmacies[previous][0];
     $('paired').hidden = !from;
@@ -375,7 +375,7 @@
 
   function shareUrl() {
     const url = new URL(location.href);
-    const state = new URLSearchParams({r:'3',m:month,d:selected});
+    const state = new URLSearchParams({r:'4',m:month,d:selected});
     if(original) state.set('v','original');
     if(excluded.size) state.set('off',[...excluded].join(','));
     if(hasCustomPairs()) state.set('swap',routes.map(iso => target.get(iso)).join(','));
@@ -436,11 +436,11 @@
     const from = $('include').dataset.from;
     const next = event.target.value;
     const previous = target.get(from);
+    if(!previous || !eligible.includes(next) || next === previous) return;
     const otherFrom = [...target].find(([,to]) => to === next)?.[0];
-    if(!otherFrom || otherFrom === from) return;
     if(selected === previous) { selected = next; month = next.slice(0,7); }
     target.set(from,next);
-    target.set(otherFrom,previous);
+    if(otherFrom) target.set(otherFrom,previous);
     render();
   });
   $('partner').addEventListener('change',drawSwaps);
